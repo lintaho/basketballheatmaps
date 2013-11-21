@@ -13,21 +13,28 @@ $('#submit').click(function(){
 		type: "POST",
 		dataType: "json",
 		data: {
-			name: "$('#inputPlayerName').val()"
+			name: $('#inputPlayerName').val()
 		},
         success: function(data) {
-          console.log(data);
-          console.log('process sucess');
+          showData(data);
         },
         error: function(e) {
-            console.log(e);
-            // debugger;
+            console.log("error");
         }
 	});
 
 
 });
 
+
+function showData(data){
+	var shots = "";
+	for(var k in data){
+		console.log(data[k]['d']);
+		shots += data[k]['d'] + "<br>";
+	}
+	$('#container').html(shots);
+}
 // var heat = heatmap(canvas.get(0));
     
 //     for (var i = 0; i < 5000; i++) {

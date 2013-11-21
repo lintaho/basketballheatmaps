@@ -21,11 +21,15 @@ exports.index = function(db, heatmap){
 
 exports.shots = function(db){
 	return function(req, res){
-
 		var collection = db.get('2013_shot_chart');
-		collection.find()
-		res.contentType('json');
-		res.json({ some: JSON.stringify({response:'json'}) });	
+		var name = req.body.name
+		collection.find({"p": name }, function(e, docs){
+
+			res.contentType('json');
+			res.json(docs);	
+		});
+
+
 	};
 }
 

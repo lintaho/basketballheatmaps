@@ -29,6 +29,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.bodyParser());
 
 // development only
 if ('development' == app.get('env')) {
@@ -39,7 +40,6 @@ app.get('/', routes.index(db, heatmap));
 
 app.post('/shots', routes.shots(db))
 app.get('/users', user.list);
-app.get('/helloworld', routes.helloworld);
 
 
 http.createServer(app).listen(app.get('port'), function(){
