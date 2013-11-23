@@ -1,54 +1,109 @@
 $(window).ready(function () {
-	var canvas = $('<canvas>').attr({
-		width : 500,
-		height : 500
-	}).appendTo(document.body);
 
+// $('#submit').click(function(){
+// 	$.ajax({
+// 		url: "/shots",
+// 		type: "POST",
+// 		dataType: "json",
+// 		data: {
+// 			name: $('#inputPlayer').val(),
+// 			startdate: $("#slider").dateRangeSlider("values").min,
+// 			enddate: $("#slider").dateRangeSlider("values").max
+// 		},
+//         success: function(data) {
+//           showData(data);
+//         },
+//         error: function(e) {
+//             console.log("error");
+//         }
+// 	});
+// });
 
+$("#slider").dateRangeSlider({
 
-$('#submit').click(function(){
+	arrows:false,
+	bounds:{
+		min: new Date(2012, 10, 30), 
+		max: new Date(2013, 6, 20)
+	},
+	defaultValues:{
+		min: new Date(2012, 10, 30),
+		max: new Date(2013, 4, 17)
+	}
 
+});
+
+$("#slider").on("valuesChanged", function(e, data){
 	$.ajax({
 		url: "/shots",
 		type: "POST",
 		dataType: "json",
 		data: {
-			name: $('#inputPlayerName').val()
+			name: $('#inputPlayer').val(),
+			startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
+			enddate: $("#slider").dateRangeSlider("values").max.toISOString()
 		},
-        success: function(data) {
-          showData(data);
-        },
-        error: function(e) {
-            console.log("error");
-        }
+	    success: function(data) {
+	      showData(data);
+	    },
+	    error: function(e) {
+	        console.log("error");
+	    }
 	});
-
-
 });
 
+var config = {
+	element: document.getElementById("heat"),
+	radius: 20,
+	opacity: 70
+};
+
+var heatmap = h337.create(config);
 
 function showData(data){
+	coords = [];
 	var shots = "";
 	for(var k in data){
-		console.log(data[k]['d']);
-		shots += data[k]['d'] + "<br>";
+		coords.push({x:data[k]['x']*6, y:data[k]['y']*6, count:1})
+		shots += data[k]['x'] + "<br>";
 	}
-	$('#container').html(shots);
+	console.log(coords)
+	var heatpoints = {
+		max: 3,
+		data: coords		
+	};	
+	heatmap.store.setDataSet(heatpoints);
 }
-// var heat = heatmap(canvas.get(0));
-    
-//     for (var i = 0; i < 5000; i++) {
-//         var rho = Math.random() * 2 * Math.PI;
-//         var z = Math.pow(Math.random(), 2) * 250;
-        
-//         var x = 250 + Math.cos(rho) * z;
-//         var y = 250 + Math.sin(rho) * z;
-        
-//         heat.addPoint(x, y);
-//     }
-    
-//     heat.draw();
 
+
+$('#inputPlayer').autocomplete({
+	source: "/players",
+	minLength: 2,
+	select: function(event, ui){
+		console.log(ui['item']['value'])
+		$.ajax({
+			url: "/shots",
+			type: "POST",
+			dataType: "json",
+			data: {
+				name: ui['item']['value'],
+				startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
+				enddate: $("#slider").dateRangeSlider("values").max.toISOString()
+			},
+		    success: function(data) {
+		      showData(data);
+		    },
+		    error: function(e) {
+		        console.log("error");
+		    }
+		});
+	}, 
+	 messages: {
+        noResults: '',
+        results: function() {}
+    }
+
+});
 
 
 });

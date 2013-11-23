@@ -1,8 +1,19 @@
 extends layout
 
 block content
-	h1= title
-	form#formFindPlayer(name="findplayer",method="get",action="/")
-		input#inputPlayerName(type="text", placeholder="Name", name="player")
-		input#submit(type='button', value="submit")
-	#container
+	div.container
+		div.row
+			div.text-center
+				h1= title
+
+			div.text-center
+				div.input-group
+					input.form-control#inputPlayer(type="text", placeholder="Player name")
+					//span.input-group-btn
+					//	button#submit(class="btn btn-primary" type="button") Search
+		div.text-center
+			#slider
+		br
+		div.row
+			div.span4.offset4
+				div.text-center#heat

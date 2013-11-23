@@ -6,3 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+#heat {
+	position: relative;
+	background-image:url('/images/court.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 562.5px;
+	width: 300px;
+}
