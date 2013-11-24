@@ -1,24 +1,5 @@
 $(window).ready(function () {
 
-// $('#submit').click(function(){
-// 	$.ajax({
-// 		url: "/shots",
-// 		type: "POST",
-// 		dataType: "json",
-// 		data: {
-// 			name: $('#inputPlayer').val(),
-// 			startdate: $("#slider").dateRangeSlider("values").min,
-// 			enddate: $("#slider").dateRangeSlider("values").max
-// 		},
-//         success: function(data) {
-//           showData(data);
-//         },
-//         error: function(e) {
-//             console.log("error");
-//         }
-// 	});
-// });
-
 $("#slider").dateRangeSlider({
 
 	arrows:false,
@@ -33,13 +14,17 @@ $("#slider").dateRangeSlider({
 
 });
 
-$("#slider").on("valuesChanged", function(e, data){
+$("#slider").on("valuesChanging", function(e, data){
 	$.ajax({
 		url: "/shots",
 		type: "POST",
 		dataType: "json",
 		data: {
 			name: $('#inputPlayer').val(),
+			made: $(".madebox").prop('checked'),
+			missed: $(".missedbox").prop('checked'),
+			qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
+				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
 			startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
 			enddate: $("#slider").dateRangeSlider("values").max.toISOString()
 		},
@@ -67,7 +52,6 @@ function showData(data){
 		coords.push({x:data[k]['x']*6, y:data[k]['y']*6, count:1})
 		shots += data[k]['x'] + "<br>";
 	}
-	console.log(coords)
 	var heatpoints = {
 		max: 3,
 		data: coords		
@@ -80,13 +64,98 @@ $('#inputPlayer').autocomplete({
 	source: "/players",
 	minLength: 2,
 	select: function(event, ui){
-		console.log(ui['item']['value'])
+
+
 		$.ajax({
 			url: "/shots",
 			type: "POST",
 			dataType: "json",
 			data: {
 				name: ui['item']['value'],
+				made: $(".madebox").prop('checked'),
+				missed: $(".missedbox").prop('checked'),
+				qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
+				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
+				startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
+				enddate: $("#slider").dateRangeSlider("values").max.toISOString()
+			},
+		    success: function(data) {
+		      showData(data);
+		    },
+		    error: function(e) {
+		        console.log(e);
+		    }
+		});
+
+
+	}, 
+	 messages: {
+        noResults: '',
+        results: function() {}
+    }
+
+});
+
+
+$('.madebox').change(function() {
+    $.ajax({
+		url: "/shots",
+		type: "POST",
+		dataType: "json",
+		data: {
+			name: $('#inputPlayer').val(),
+			made: $(".madebox").prop('checked'),
+			missed: $(".missedbox").prop('checked'),
+			qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
+				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
+			startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
+			enddate: $("#slider").dateRangeSlider("values").max.toISOString()
+		},
+	    success: function(data) {
+	      showData(data);
+	    },
+	    error: function(e) {
+	        console.log("error");
+	    }
+	});
+}); 
+
+$('.missedbox').change(function() {
+    $.ajax({
+		url: "/shots",
+		type: "POST",
+		dataType: "json",
+		data: {
+			name: $('#inputPlayer').val(),
+			made: $(".madebox").prop('checked'),
+			missed: $(".missedbox").prop('checked'),
+			qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
+				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
+			startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
+			enddate: $("#slider").dateRangeSlider("values").max.toISOString()
+		},
+	    success: function(data) {
+	      showData(data);
+	    },
+	    error: function(e) {
+	        console.log("error");
+	    }
+	});
+}); 
+
+
+$("#qtrs_boxes :checkbox").change(function(e){
+
+	$.ajax({
+			url: "/shots",
+			type: "POST",
+			dataType: "json",
+			data: {
+				name: $('#inputPlayer').val(),
+				made: $(".madebox").prop('checked'),
+				missed: $(".missedbox").prop('checked'),
+				qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
+					$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
 				startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
 				enddate: $("#slider").dateRangeSlider("values").max.toISOString()
 			},
@@ -97,13 +166,10 @@ $('#inputPlayer').autocomplete({
 		        console.log("error");
 		    }
 		});
-	}, 
-	 messages: {
-        noResults: '',
-        results: function() {}
-    }
 
 });
+
+
 
 
 });

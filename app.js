@@ -12,9 +12,6 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/local');
 
-var heatmap = require('heatmap');
-
-
 var app = express();
 
 // all environments
@@ -35,8 +32,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index(db, heatmap));
-
+// routes
+app.get('/', routes.index(db))
 app.post('/shots', routes.shots(db))
 app.get('/players', routes.players(db))
 
