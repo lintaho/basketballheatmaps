@@ -10,8 +10,6 @@ var path = require('path');
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/local');
-// var db = monk('mongodb://lintaho:Dallas40@ds053708.mongolab.com:53708/heroku_app19741299');
 
 var app = express();
 
@@ -30,13 +28,17 @@ app.use(express.bodyParser());
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	var db = monk('localhost:27017/local');
 }
-
+// production only
+if ('production' == app.get('env')) {
+	var db = monk('mongodb://lintaho:Dallas40@ds053708.mongolab.com:53708/heroku_app19741299');
+}
 // routes
-app.get('/', routes.index(db))
-app.post('/shots', routes.shots(db))
-app.get('/players', routes.players(db))
+app.get('/', routes.index(db));
+app.post('/shots', routes.shots(db));
+app.get('/players', routes.players(db));
+app.get('/about', routes.about);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -5,7 +5,7 @@
 
 exports.index = function(db){
 	return function(req, res){
-		res.render('index', { title: 'NBA Heatmaps' });
+		res.render('index', { title: 'Basketball Heatmaps' });
 	};
 };
 
@@ -19,7 +19,6 @@ exports.players = function(db){
 		});
 	};
 }
-
 
 exports.shots = function(db){
 	return function(req, res){
@@ -62,3 +61,7 @@ exports.shots = function(db){
 
 	};
 }
+
+exports.about = function(req, res){
+		res.render('about', {title: "About"})
+	};
