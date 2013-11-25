@@ -16,36 +16,29 @@ block content
 			div.text-center.center#heat
 		br
 		br
-		div.text-center.center
-			#slider
+		#slider.center
 		br
-
-		div.checkbox
-			label.checkbox-inline
-				input#madebox(type="checkbox", checked="true")
-				| Made
-			label.checkbox-inline
-				input#missedbox(type="checkbox") 
-				| Missed
-		br
-		div#qtrs_boxes
-			div.checkbox
-				label
-					input#onebox(type="checkbox", checked="true") 
-					| 1st
-			div.checkbox
-				label
-					input#twobox(type="checkbox", checked="true") 
-					| 2nd
-			div.checkbox
-				label
-					input#threebox(type="checkbox", checked="true") 
-					| 3rd
-			div.checkbox
-				label
-					input#fourbox(type="checkbox", checked="true") 
-					| 4th
-			div.checkbox
-				label
-					input#OTbox(type="checkbox") 
-					| OT
+		div#options.text-center
+			div#madeboxes
+				label.checkbox.inline
+					input#madebox(type="checkbox", checked="true")
+					| Made shot
+				label.checkbox.inline
+					input#missedbox(type="checkbox") 
+					| Missed shot
+			div#qtrs_boxes
+				label.checkbox.inline
+						input#onebox(type="checkbox", checked="true") 
+						| 1st
+				label.checkbox.inline
+						input#twobox(type="checkbox", checked="true") 
+						| 2nd
+				label.checkbox.inline
+						input#threebox(type="checkbox", checked="true") 
+						| 3rd
+				label.checkbox.inline
+						input#fourbox(type="checkbox", checked="true") 
+						| 4th
+				label.checkbox.inline
+						input#OTbox(type="checkbox") 
+						| OT

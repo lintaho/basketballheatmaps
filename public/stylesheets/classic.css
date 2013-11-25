@@ -71,6 +71,7 @@
 }
 
 .ui-rangeSlider-label{
+	font-size:12px;
 	margin:0 2px 2px;
 	/*background-image:url('/images/label.png');*/
 	background-position:bottom center;
