@@ -10,7 +10,8 @@ var path = require('path');
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('mongodb://lintaho:Dallas40@ds053708.mongolab.com:53708/heroku_app19741299');
+var db = monk('localhost:27017/local');
+// var db = monk('mongodb://lintaho:Dallas40@ds053708.mongolab.com:53708/heroku_app19741299');
 
 var app = express();
 

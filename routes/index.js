@@ -6,6 +6,7 @@
 exports.index = function(db){
 
 	return function(req, res){
+		console.log(req)	
 		res.render('index', { title: 'NBA Heatmaps' });
 	};
 };

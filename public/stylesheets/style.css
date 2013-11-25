@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #fdfbf5;
 }
 
 a {
@@ -14,4 +15,17 @@ a {
 	background-size: cover;
 	height: 562.5px;
 	width: 300px;
+}
+
+.center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
+}
+
+h1{
+	color: #eb6947;
+}
+h3{
+	color: #4e4943;
 }

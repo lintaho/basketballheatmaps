@@ -21,8 +21,8 @@ $("#slider").on("valuesChanging", function(e, data){
 		dataType: "json",
 		data: {
 			name: $('#inputPlayer').val(),
-			made: $(".madebox").prop('checked'),
-			missed: $(".missedbox").prop('checked'),
+			made: $("#madebox").prop('checked'),
+			missed: $("#missedbox").prop('checked'),
 			qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
 				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
 			startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
@@ -72,8 +72,8 @@ $('#inputPlayer').autocomplete({
 			dataType: "json",
 			data: {
 				name: ui['item']['value'],
-				made: $(".madebox").prop('checked'),
-				missed: $(".missedbox").prop('checked'),
+				made: $("#madebox").prop('checked'),
+				missed: $("#missedbox").prop('checked'),
 				qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
 				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
 				startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
@@ -97,15 +97,15 @@ $('#inputPlayer').autocomplete({
 });
 
 
-$('.madebox').change(function() {
+$('#madebox').change(function() {
     $.ajax({
 		url: "/shots",
 		type: "POST",
 		dataType: "json",
 		data: {
 			name: $('#inputPlayer').val(),
-			made: $(".madebox").prop('checked'),
-			missed: $(".missedbox").prop('checked'),
+			made: $("#madebox").prop('checked'),
+			missed: $("#missedbox").prop('checked'),
 			qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
 				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
 			startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
@@ -120,15 +120,15 @@ $('.madebox').change(function() {
 	});
 }); 
 
-$('.missedbox').change(function() {
+$('#missedbox').change(function() {
     $.ajax({
 		url: "/shots",
 		type: "POST",
 		dataType: "json",
 		data: {
 			name: $('#inputPlayer').val(),
-			made: $(".madebox").prop('checked'),
-			missed: $(".missedbox").prop('checked'),
+			made: $("#madebox").prop('checked'),
+			missed: $("#missedbox").prop('checked'),
 			qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
 				$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
 			startdate: $("#slider").dateRangeSlider("values").min.toISOString(),
@@ -152,8 +152,8 @@ $("#qtrs_boxes :checkbox").change(function(e){
 			dataType: "json",
 			data: {
 				name: $('#inputPlayer').val(),
-				made: $(".madebox").prop('checked'),
-				missed: $(".missedbox").prop('checked'),
+				made: $("#madebox").prop('checked'),
+				missed: $("#missedbox").prop('checked'),
 				qtr: [$("#onebox").prop('checked'), $("#twobox").prop('checked'), $("#threebox").prop('checked'),
 					$("#fourbox").prop('checked'), $("#OTbox").prop('checked')],
 				startdate: $("#slider").dateRangeSlider("values").min.toISOString(),

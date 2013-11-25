@@ -7,18 +7,25 @@ block content
 				h1= title
 
 			div.text-center
-				div.input-group
-					input.form-control#inputPlayer(type="text", placeholder="Player name")
-		div.text-center
+				div.form-horizontal
+					h3
+						| Player Name:  
+						input.form-control#inputPlayer(type="text", placeholder="Player name")
+
+		div.row
+			div.text-center.center#heat
+		br
+		br
+		div.text-center.center
 			#slider
 		br
+
 		div.checkbox
-			label
-				input.madebox(type="checkbox", checked="true")
+			label.checkbox-inline
+				input#madebox(type="checkbox", checked="true")
 				| Made
-		div.checkbox
-			label
-				input.missedbox(type="checkbox") 
+			label.checkbox-inline
+				input#missedbox(type="checkbox") 
 				| Missed
 		br
 		div#qtrs_boxes
@@ -42,8 +49,3 @@ block content
 				label
 					input#OTbox(type="checkbox") 
 					| OT
-
-		br
-		div.row
-			div.span4.offset4
-				div.text-center#heat
