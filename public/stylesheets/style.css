@@ -15,6 +15,7 @@ a {
 	background-size: cover;
 	height: 562.5px;
 	width: 300px;
+	z-index: -10000;
 }
 
 .center {

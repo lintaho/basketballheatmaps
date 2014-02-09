@@ -1,8 +1,9 @@
 extends layout
 
 block content
-	div.container
+	div.container(ng-controller="mainController")
 		div.row
+			button(ng-click="queryShots()") Add
 			div.text-center
 				h1= title
 			p.text-center
@@ -10,9 +11,10 @@ block content
 			div.text-center
 				div.form-horizontal
 					h3
-						| Player Name:  
-						input.form-control#inputPlayer(type="text", placeholder="Player name")
-
+						| Player Name:
+						input.form-control#inputPlayer(type="text", placeholder="Player name" ng-model="selected" 
+							typeahead-min-length="2" typeahead-on-select="queryShots($item, $model, $label)" typeahead="player for player in getPlayers($viewValue) | filter:$viewValue")
+				loading(ng-show="loadingShots")
 		div.row
 			div.text-center.center#heat
 		br
@@ -21,27 +23,11 @@ block content
 		br
 		div#options.text-center
 			div#madeboxes
-				label.checkbox.inline
-					input#madebox(type="checkbox", checked="true")
-					| Made shot
-				label.checkbox.inline
-					input#missedbox(type="checkbox") 
-					| Missed shot
+				label.checkbox.inline(ng-repeat="box in ['Made', 'Missed']")
+					input(type="checkbox", name="selected[]", value="{{box}}", ng-checked="selection.indexOf(box) > -1" ng-click="updateShots(box)")
+					| {{box}}
 			div#qtrs_boxes
-				label.checkbox.inline
-						input#onebox(type="checkbox", checked="true") 
-						| 1st
-				label.checkbox.inline
-						input#twobox(type="checkbox", checked="true") 
-						| 2nd
-				label.checkbox.inline
-						input#threebox(type="checkbox", checked="true") 
-						| 3rd
-				label.checkbox.inline
-						input#fourbox(type="checkbox", checked="true") 
-						| 4th
-				label.checkbox.inline
-						input#OTbox(type="checkbox") 
-						| OT
-
+				label.checkbox.inline(ng-repeat="box in ['1','2', '3', '4', 'Overtime']")
+					input(type="checkbox", name="selected[]", value="{{box}}", ng-checked="selection.indexOf(box) > -1" ng-click="updateShots(box)")
+					| {{box}}
 	include footer.jade

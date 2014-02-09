@@ -28,7 +28,7 @@ app.use(express.bodyParser());
 
 // development only
 if ('development' == app.get('env')) {
-	var db = monk('localhost:27017/local');
+	var db = monk('localhost:27017/heroku_app19741299');
 }
 // production only
 if ('production' == app.get('env')) {
