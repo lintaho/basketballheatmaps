@@ -24,12 +24,32 @@ exports.shots = function(db){
 	return function(req, res){
 
 		var collection = db.get('2013_shot_chart');
-		// var date_map = db.get('gameId_dates_map')
 		
+		//TODO: move this to upload/python script
+		var date_map = db.get('gameId_dates_map')
+
+
 		var name = req.body.name;
 		collection.find({"p":name}, function(e, docs){
-			res.contentType('json');
-			res.json(docs);
+			//find the names + gameIds
+
+			date_map.find({"gameId": {$in: docs.map(function(game){ return game.gameId;} ) }}, ["gameId", "date"], function(e, dates){
+
+				for(var d in docs){
+					//for every shot
+					//match the gameId to a date
+					for(var e in dates){
+						if(dates[e]['gameId'] == docs[d]['gameId'] ){
+							docs[d]['date'] = dates[e]['date'];
+							break;
+						}
+					}
+				}
+				res.contentType('json');
+				res.json(docs);
+				
+			})
+
 		});
 		
 	};

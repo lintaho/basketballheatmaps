@@ -3,7 +3,6 @@ extends layout
 block content
 	div.container(ng-controller="mainController")
 		div.row
-			button(ng-click="queryShots()") Add
 			div.text-center
 				h1= title
 			p.text-center
@@ -19,7 +18,7 @@ block content
 			div.text-center.center#heat
 		br
 		br
-		#slider.center
+		#slider.center(slider="{arrows:false, bounds:{min: '10-30-2012',max: '06-20-2013'}, defaultValues:{min: '10-30-2012', max: '04-17-2013'}  }" update-shots="updateShots(arg1)")
 		br
 		div#options.text-center
 			div#madeboxes
