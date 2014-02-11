@@ -13,7 +13,8 @@ basketballHeatmaps.directive("slider", function(){
 	return{
 		restrict: "A",
 		scope:{
-			update: '&updateShots'
+			update: '&updateShots',
+			dates: '&setDates'
 		},
 		link: function(scope, element, attrs){ 
 			var	params = scope.$eval(attrs.slider);
@@ -26,8 +27,9 @@ basketballHeatmaps.directive("slider", function(){
 				params.defaultValues.min = new Date(params.defaultValues.min);
 			}
 			$(element).dateRangeSlider(params);
-			$(element).on('valuesChanged', function(e, res){
-				scope.update({arg1: res.values})
+			scope.dates({ arg1: params.defaultValues });
+			$(element).on('valuesChanging', function(e, res){
+				scope.update({arg1: res.values});
 			});
 		}
 	}
@@ -42,11 +44,14 @@ function mainController($scope, $http){
 		opacity: 70
 	};
 	$scope.heatmap = h337.create(config);
+	$scope.dates = []; //min, max
 
-
+	$scope.setDates = function(dates){
+		$scope.dates.push(dates.min);
+		$scope.dates.push(dates.max);
+	}
 	//default checkboxes
 	$scope.selection = ['Made', '1', '2', '3', '4'];
-
 	$scope.queryShots = function($item, $model, $label){
 		$scope.player = $item;
 
@@ -55,7 +60,7 @@ function mainController($scope, $http){
 			.success(function(data){
 				$scope.shots = data;
 				$scope.loadingShots = false;
-				$scope.showData(data);
+				$scope.showData(data, $scope.dates);
 			})
 			.error(function(data){
 				console.log("Error!");
@@ -64,9 +69,10 @@ function mainController($scope, $http){
 	}
 
 	$scope.updateShots = function(option){
-
 		//Dates
 		if(typeof(option) == 'object'){
+			$scope.dates[0] = option.min;
+			$scope.dates[1] = option.max;
 		}
 		//Checkboxes
 		else{
@@ -78,11 +84,11 @@ function mainController($scope, $http){
 			    $scope.selection.push(option);
 		    }
 		}
-	    $scope.showData($scope.shots)
+	    $scope.showData($scope.shots, $scope.dates);
 	}
 
 
-	$scope.showData = function(data){
+	$scope.showData = function(data, dates){
 		coords = [];
 		made = [];
 		qtr = [];
@@ -99,16 +105,19 @@ function mainController($scope, $http){
 		}
 		for(var k in data){
 			shot = data[k]
-			if(qtr.indexOf(shot['qtr']) != -1){
-				//correct quarter
-				if(made.indexOf('Made') != -1 && made.indexOf('Missed') != -1){
-					coords.push({x:shot['x']*6, y:shot['y']*6, count:1})
-				}else if(made.indexOf('Made') != -1){
-					if(shot['made'] == 'true')
+			date = new Date(shot.date)
+			if(date >= dates[0] && date <= dates[1]){
+				if(qtr.indexOf(shot['qtr']) != -1){
+					//correct quarter
+					if(made.indexOf('Made') != -1 && made.indexOf('Missed') != -1){
 						coords.push({x:shot['x']*6, y:shot['y']*6, count:1})
-				}else if(made.indexOf('Missed') != -1){
-					if(shot['made'] == 'false')
-						coords.push({x:shot['x']*6, y:shot['y']*6, count:1})
+					}else if(made.indexOf('Made') != -1){
+						if(shot['made'] == 'true')
+							coords.push({x:shot['x']*6, y:shot['y']*6, count:1})
+					}else if(made.indexOf('Missed') != -1){
+						if(shot['made'] == 'false')
+							coords.push({x:shot['x']*6, y:shot['y']*6, count:1})
+					}
 				}
 			}
 
