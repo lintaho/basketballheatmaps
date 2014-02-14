@@ -37,7 +37,7 @@ if ('production' == app.get('env')) {
 }
 // routes
 app.get('/', routes.index(db));
-app.post('/shots', routes.shots(db));
+app.get('/shots', routes.shots(db));
 app.get('/players', routes.players(db));
 app.get('/about', routes.about);
 

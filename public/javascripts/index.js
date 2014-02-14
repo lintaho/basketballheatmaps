@@ -36,8 +36,20 @@ basketballHeatmaps.directive("slider", function(){
 
 });
 
+basketballHeatmaps.config(['$routeProvider', function($routeProvider){
+	// $routeProvider.when('/blah', {template: 'about.jade', controller: 'testController' })
+
+}]);
+
+// basketballHeatmaps.controller('testController', function($scope) {
+     
+//     $scope.message = 'This is Add new order screen';
+     
+// });
+
 function mainController($scope, $http){
 	
+
 	var config = {
 		element: document.getElementById("heat"),
 		radius: 20,
@@ -55,8 +67,11 @@ function mainController($scope, $http){
 	$scope.queryShots = function($item, $model, $label){
 		$scope.player = $item;
 
+		// $location.path('/?player='+ $scope.player);
+		// $location.search() = {"player":$scope.player};
+		
 		$scope.loadingShots = true;
-		$http.post('/shots', { name: $item })
+		$http.get('/shots', { params: { name: $item } })
 			.success(function(data){
 				$scope.shots = data;
 				$scope.loadingShots = false;
@@ -130,6 +145,8 @@ function mainController($scope, $http){
 	}
 
 	$scope.getPlayers = function(val){
+		
+
 		return $http.get('/players', {
 			params: {
 					name: val
