@@ -12,6 +12,7 @@ block content
 					div.form-horizontal
 						input.form-control#inputPlayer(type="text", placeholder="Player name" ng-model="selected" 
 							typeahead-min-length="2" typeahead-on-select="queryShots($item, $model, $label)" typeahead="player for player in getPlayers($viewValue) | filter:$viewValue")
+					br
 					loading(ng-show="loadingShots")
 				br
 			div.row
