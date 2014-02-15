@@ -1,33 +1,31 @@
 extends layout
 
 block content
-	div.container(ng-controller="mainController")
-		div.row
-			div.text-center
-				h1= title
-			p.text-center
-				|Heatmaps from the 2012-2013 NBA season
-			div.text-center
-				div.form-horizontal
-					h3
-						| Player Name:
+	div(ng-app='basketballHeatmaps')
+		div.container(ng-controller="MainController")
+			div.row
+				div.text-center
+					h1= title
+				p.text-center
+					|Heatmaps from the 2012-2013 NBA season
+				div.text-center
+					div.form-horizontal
 						input.form-control#inputPlayer(type="text", placeholder="Player name" ng-model="selected" 
 							typeahead-min-length="2" typeahead-on-select="queryShots($item, $model, $label)" typeahead="player for player in getPlayers($viewValue) | filter:$viewValue")
-				loading(ng-show="loadingShots")
-		div.row
-			div.text-center.center#heat
-		br
-
-		br
-		#slider.center(slider="{arrows:false, bounds:{min: '10-30-2012',max: '06-20-2013'}, defaultValues:{min: '10-30-2012', max: '04-17-2013'}  }" set-dates="setDates(arg1)" update-shots="updateShots(arg1)")
-		br
-		div#options.text-center
-			div#madeboxes
-				label.checkbox.inline(ng-repeat="box in ['Made', 'Missed']")
-					input(type="checkbox", name="selected[]", value="{{box}}", ng-checked="selection.indexOf(box) > -1" ng-click="updateShots(box)")
-					| {{box}}
-			div#qtrs_boxes
-				label.checkbox.inline(ng-repeat="box in ['1','2', '3', '4', 'Overtime']")
-					input(type="checkbox", name="selected[]", value="{{box}}", ng-checked="selection.indexOf(box) > -1" ng-click="updateShots(box)")
-					| {{box}}
-	include footer.jade
+					loading(ng-show="loadingShots")
+				br
+			div.row
+				div.text-center.center#heat
+			br
+			div.row.sliderow
+				#slider.center(slider="{arrows:false, bounds:{min: '10-30-2012',max: '06-20-2013'}, defaultValues:{min: '10-30-2012', max: '04-17-2013'}  }" set-dates="setDates(arg1)" update-shots="updateShots(arg1)")
+			br
+			div#options.text-center
+				div#madeboxes
+					label.checkbox.inline(ng-repeat="box in ['Made', 'Missed']")
+						input(type="checkbox", name="selected[]", value="{{box}}", ng-checked="selection.indexOf(box) > -1" ng-click="updateShots(box)")
+						| {{box}}
+				div#qtrs_boxes
+					label.checkbox.inline(ng-repeat="box in ['1','2', '3', '4', 'Overtime']")
+						input(type="checkbox", name="selected[]", value="{{box}}", ng-checked="selection.indexOf(box) > -1" ng-click="updateShots(box)")
+						| {{box}}

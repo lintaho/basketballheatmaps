@@ -10,22 +10,22 @@
 .ui-rangeSlider .ui-rangeSlider-innerBar{
 	height:16px;
 	margin:3px 6px;
-	background:#f6f0da;
+	background:#e9e2e7;
 	border-style: solid;
 	border-width: 1px;
-	border-color:#4e4943;
+	border-color:#756e65;
 }
 
 .ui-rangeSlider .ui-rangeSlider-handle{
 	width:6px;
 	height:22px;
-	background:#eb6947;
+	background:#272727;
 	cursor:col-resize;
 }
 
 .ui-rangeSlider .ui-rangeSlider-bar{
 	margin: 1px 0;
-	background:#4e4943;
+	background:#756e65;
 	height:20px;
 	cursor:move;
 	cursor:grab;

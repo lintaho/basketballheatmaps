@@ -3,10 +3,15 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+#inputPlayer{
+	margin-left: 10px;
+	width:200px;
 }
 
+.dropdown-menu{
+	margin-left: 10px;
+	width: 200px;
+}
 #heat {
 	position: relative;
 	background-image:url('/images/court.png');
@@ -23,9 +28,6 @@ a {
      margin-right: auto;
 }
 
-h1{
-	color: #eb6947;
-}
 h3{
 	color: #4e4943;
 }
@@ -34,6 +36,9 @@ h3{
 	width: 400px;
 }
 
+.sliderow{
+	margin-top: 20px;
+}
 #footer{
 	margin-top: 20px;
 }

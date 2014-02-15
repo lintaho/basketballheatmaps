@@ -35,11 +35,14 @@ if ('development' == app.get('env')) {
 if ('production' == app.get('env')) {
 	var db = monk('mongodb://lintaho:Dallas40@ds053708.mongolab.com:53708/heroku_app19741299');
 }
+
 // routes
 app.get('/', routes.index(db));
-app.get('/shots', routes.shots(db));
+app.get('/player/:name', routes.index(db)); //route with state, a bit hacky
 app.get('/players', routes.players(db));
 app.get('/about', routes.about);
+app.get('/shots/:name', routes.shots(db));
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

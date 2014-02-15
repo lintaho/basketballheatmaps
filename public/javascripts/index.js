@@ -1,15 +1,17 @@
 var basketballHeatmaps = angular.module('basketballHeatmaps', ['ui.bootstrap']);
 
-basketballHeatmaps.directive("loading", function(){
+basketballHeatmaps.config(['$locationProvider', function($locationProvider){
+	$locationProvider.html5Mode(true);
+}]);
 
+basketballHeatmaps.directive("loading", function(){
 	return {
 		restrict: "E",
-		template: "<img src='images/ajax-loader.gif' alt='loading'></image>"
+		template: "<img src='/images/ajax-loader.gif' alt='loading'></image>"
 	}
 });
 
-basketballHeatmaps.directive("slider", function(){
-
+basketballHeatmaps.directive("slider", ['$location', function(){
 	return{
 		restrict: "A",
 		scope:{
@@ -22,33 +24,30 @@ basketballHeatmaps.directive("slider", function(){
 				params.bounds.max = new Date(params.bounds.max);
 				params.bounds.min = new Date(params.bounds.min);
 			}
-			if(params.defaultValues != undefined){
-				params.defaultValues.max = new Date(params.defaultValues.max);
-				params.defaultValues.min = new Date(params.defaultValues.min);
+			var param_string = location.search
+			if(param_string.indexOf('d=') > 0){
+				//has dates in search params, a bit hacky
+				var dates = param_string.substring(param_string.indexOf('d=')).split('d=');
+				dates = [unescape(dates[1].slice(0,-1)), unescape(dates[2])]
+				params.defaultValues.max = new Date(dates[1]);
+				params.defaultValues.min = new Date(dates[0]);
+			}else{
+				//default behavior
+				if(params.defaultValues != undefined){
+					params.defaultValues.max = new Date(params.defaultValues.max);
+					params.defaultValues.min = new Date(params.defaultValues.min);
+				}
 			}
 			$(element).dateRangeSlider(params);
 			scope.dates({ arg1: params.defaultValues });
 			$(element).on('valuesChanging', function(e, res){
-				scope.update({arg1: res.values});
+				scope.$apply(scope.update({arg1: res.values}));
 			});
 		}
 	}
-
-});
-
-basketballHeatmaps.config(['$routeProvider', function($routeProvider){
-	// $routeProvider.when('/blah', {template: 'about.jade', controller: 'testController' })
-
 }]);
 
-// basketballHeatmaps.controller('testController', function($scope) {
-     
-//     $scope.message = 'This is Add new order screen';
-     
-// });
-
-function mainController($scope, $http){
-	
+basketballHeatmaps.controller('MainController', function($scope, $http, $location){
 
 	var config = {
 		element: document.getElementById("heat"),
@@ -56,26 +55,30 @@ function mainController($scope, $http){
 		opacity: 70
 	};
 	$scope.heatmap = h337.create(config);
-	$scope.dates = []; //min, max
 
+	//exposes dates to directives
 	$scope.setDates = function(dates){
+		$scope.dates = []
 		$scope.dates.push(dates.min);
 		$scope.dates.push(dates.max);
 	}
+
 	//default checkboxes
 	$scope.selection = ['Made', '1', '2', '3', '4'];
+
+	//query all shots for a player
 	$scope.queryShots = function($item, $model, $label){
 		$scope.player = $item;
-
-		// $location.path('/?player='+ $scope.player);
-		// $location.search() = {"player":$scope.player};
-		
 		$scope.loadingShots = true;
-		$http.get('/shots', { params: { name: $item } })
+		$http.get('/shots/' + $scope.player)
 			.success(function(data){
 				$scope.shots = data;
 				$scope.loadingShots = false;
 				$scope.showData(data, $scope.dates);
+				if(!$scope.initialLoad){
+					$location.url('/player/' + $scope.player);
+				}
+				$scope.initialLoad = false;
 			})
 			.error(function(data){
 				console.log("Error!");
@@ -83,6 +86,7 @@ function mainController($scope, $http){
 			});
 	}
 
+	//update selection
 	$scope.updateShots = function(option){
 		//Dates
 		if(typeof(option) == 'object'){
@@ -99,10 +103,11 @@ function mainController($scope, $http){
 			    $scope.selection.push(option);
 		    }
 		}
+		$location.search({q : $scope.selection, d : $scope.dates });
 	    $scope.showData($scope.shots, $scope.dates);
 	}
 
-
+	//update heatmap
 	$scope.showData = function(data, dates){
 		coords = [];
 		made = [];
@@ -144,9 +149,8 @@ function mainController($scope, $http){
 		$scope.heatmap.store.setDataSet(heatpoints);
 	}
 
+	//fetch playerlist for dropdown
 	$scope.getPlayers = function(val){
-		
-
 		return $http.get('/players', {
 			params: {
 					name: val
@@ -160,4 +164,16 @@ function mainController($scope, $http){
 		});
 	}
 
-}
+	//initial loading
+	if($location.path().indexOf('player') > 0){
+		var params = $location.search();
+		if(params['q'] != undefined)
+			$scope.selection = params['q']
+		if(params['d'] != undefined)
+			$scope.dates = params['d']
+		$scope.player = $location.path().substring(8);
+		$scope.selected = $scope.player;
+		$scope.initialLoad = true;
+		$scope.queryShots($scope.player);
+	}
+});

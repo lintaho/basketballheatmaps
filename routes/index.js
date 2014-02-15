@@ -9,7 +9,11 @@ exports.index = function(db){
 	};
 };
 
-// GET players
+exports.about = function(req, res){
+		res.render('about', {title: "About"})
+};
+
+// GET list of all players
 exports.players = function(db){
 	return function(req, res){
 		var collection = db.get('player_names');
@@ -21,16 +25,16 @@ exports.players = function(db){
 	};
 }
 
-// GET players
+// GET all shots for a player
 exports.shots = function(db){
 	return function(req, res){
-
+		console.log(req);
 		var collection = db.get('2013_shot_chart');
 		
 		//TODO: move this to upload/python script
 		var date_map = db.get('gameId_dates_map')
 
-		var name = req.query.name;
+		var name = req.params.name;
 		console.log(name);
 		collection.find({"p":name}, function(e, docs){
 			// console.log(name, docs);
@@ -52,6 +56,3 @@ exports.shots = function(db){
 	};
 }
 
-exports.about = function(req, res){
-		res.render('about', {title: "About"})
-};
