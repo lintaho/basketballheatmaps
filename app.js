@@ -33,7 +33,7 @@ if ('development' == app.get('env')) {
 }
 // production only
 if ('production' == app.get('env')) {
-	var db = monk('mongodb://lintaho:Dallas40@ds053708.mongolab.com:53708/heroku_app19741299');
+	var db = monk('mongodb://lintaho:*******@ds053708.mongolab.com:53708/heroku_app19741299');
 }
 
 // routes
